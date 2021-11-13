@@ -6,17 +6,17 @@ on:
 
 jobs:
 
-  #build-and-publish:
-   # runs-on: ubuntu-latest
-    #steps:
- #   - uses: actions/checkout@v2
-  #  - run: docker build . --tag ghcr.io/domvo/astrosite:pullreq
-   # - run: echo ${{ secrets.PAT }} | docker login ghcr.io -u domvo --password-stdin
-   # - run: docker push ghcr.io/domvo/astrosite:pullreq
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: docker build . --tag ghcr.io/domvo/astrosite:pullreq
+    - run: echo ${{ secrets.PAT }} | docker login ghcr.io -u domvo --password-stdin
+    - run: docker push ghcr.io/domvo/astrosite:pullreq
 
   run-docker-container:
     runs-on: ubuntu-latest
- #   needs: build-and-publish
+    needs: build-and-publish
     steps:
     - uses: appleboy/ssh-action@1d1b21ca96111b1eb4c03c21c14ebb971d2200f6
       with:
