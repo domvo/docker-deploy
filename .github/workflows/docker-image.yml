@@ -10,6 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: docker build . --tag ghcr.io/domvo/docker-deploy:latest
+    - run: docker build . --tag ghcr.io/domvo/astrosite:latest
     - run: echo ${{ secrets.PAT }} | docker login ghcr.io -u domvo --password-stdin
-    - run: docker push ghcr.io/domvo/docker-deploy:latest
+    - run: docker push ghcr.io/domvo/astrosite:latest
