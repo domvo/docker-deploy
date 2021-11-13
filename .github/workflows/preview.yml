@@ -13,10 +13,10 @@ jobs:
     - run: |
         SLUGG=$(echo ${{ github.ref_name }} | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z) 
         echo "SLUG=$SLUGG" >> $GITHUB_ENV
-    - run: docker build . --tag ghcr.io/domvo/astrosite:$SLUG
+    - run: docker build . --tag ghcr.io/domvo/astrosite:${{ env.SLUG }}
     - run: echo ${{ secrets.PAT }} | docker login ghcr.io -u domvo --password-stdin
     - run: |
-        docker push ghcr.io/domvo/astrosite:$SLUG
+        docker push ghcr.io/domvo/astrosite:${{ env.SLUG }}
 
   run-docker-container:
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         script: |
           echo ${{ secrets.PAT }} | docker login ghcr.io -u domvo --password-stdin
-          docker pull ghcr.io/domvo/astrosite:$SLUG
-          docker stop $SLUG
+          docker pull ghcr.io/domvo/astrosite:${{ env.SLUG }}
+          docker stop ${{ env.SLUG }}
           docker system prune -f
-          docker run -d --name=pullreq --network=traefik --label traefik.enable=true --label traefik.http.routers.$SLUG.rule=Host\(\`$SLUG.dokku.devsters.de\`\) --label traefik.http.routers.$SLUG.entrypoints=web ghcr.io/domvo/astrosite:$SLUG
+          docker run -d --name=${{ env.SLUG }} --network=traefik --label traefik.enable=true --label traefik.http.routers.${{ env.SLUG }}.rule=Host\(\`${{ env.SLUG }}.dokku.devsters.de\`\) --label traefik.http.routers.${{ env.SLUG }}.entrypoints=web ghcr.io/domvo/astrosite:${{ env.SLUG }}
