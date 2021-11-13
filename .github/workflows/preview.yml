@@ -1,1 +1,33 @@
+name: Preview App on PR
 
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: docker build . --tag ghcr.io/domvo/astrosite:pullreq
+    - run: echo ${{ secrets.PAT }} | docker login ghcr.io -u domvo --password-stdin
+    - run: docker push ghcr.io/domvo/astrosite:pullreq
+
+  run-docker-container:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: appleboy/ssh-action@1d1b21ca96111b1eb4c03c21c14ebb971d2200f6
+      with:
+        host: 165.227.157.221
+        username: dome
+        key: ${{ secrets.SSH_KEY }}
+        script: |
+          docker pull ghcr.io/domvo/astrosite:pullreq
+          docker stop pullreq
+          docker system prune -f
+          docker run -d --name=pullreq \ 
+          --label traefik.enable=true \
+          --label traefik.http.routers.pullreq.rule=Host\(\`pullreq.dokku.devsters.de\`\) \
+          --label traefik.http.routers.astro.entrypoints=web \
+          ghcr.io/domvo/astrosite:pullreq
