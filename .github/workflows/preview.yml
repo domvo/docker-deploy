@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: |
-        SLUGG=$(echo ${{ github.ref_name }} | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z) 
+        SLUGG=$(echo ${{ github.ref }} | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z) 
         echo "SLUG=$SLUGG" >> $GITHUB_ENV
     - run: docker build . --tag ghcr.io/domvo/astrosite:${{ env.SLUG }}
     - run: echo ${{ secrets.PAT }} | docker login ghcr.io -u domvo --password-stdin
@@ -23,7 +23,7 @@ jobs:
     needs: build-and-publish
     steps:
     - run: |
-        SLUGG=$(echo ${{ github.ref_name }} | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z) 
+        SLUGG=$(echo ${{ github.ref }} | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z) 
         echo "SLUG=$SLUGG" >> $GITHUB_ENV
     - uses: appleboy/ssh-action@1d1b21ca96111b1eb4c03c21c14ebb971d2200f6
       with:
