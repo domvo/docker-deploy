@@ -28,4 +28,4 @@ jobs:
           docker pull ghcr.io/domvo/astrosite:pullreq
           docker stop pullreq
           docker system prune -f
-          docker run -d --name=pullreq --network=traefik --label traefik.enable=true --label traefik.http.routers.pullreq.rule=Host\(\`pullreq.dokku.devsters.de\`\) --label traefik.http.routers.astro.entrypoints=web ghcr.io/domvo/astrosite:pullreq
+          docker run -d --name=pullreq --network=traefik --label traefik.enable=true --label traefik.http.routers.pullreq.rule=Host\(\`pullreq.dokku.devsters.de\`\) --label traefik.http.routers.pullreq.entrypoints=web ghcr.io/domvo/astrosite:pullreq
