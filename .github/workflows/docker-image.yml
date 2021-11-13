@@ -1,0 +1,15 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - run: docker build . --tag astrosite:latest
+    - run: echo {{ secrets.PAT_DOCKER }} | docker login ghcr.io -u domvo --password-stdin
+    - run: docker push astrosite:latest
