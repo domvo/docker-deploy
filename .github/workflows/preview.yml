@@ -24,6 +24,7 @@ jobs:
         username: dome
         key: ${{ secrets.SSH_KEY }}
         script: |
+          echo ${{ secrets.PAT }} | docker login ghcr.io -u domvo --password-stdin
           docker pull ghcr.io/domvo/astrosite:pullreq
           docker stop pullreq
           docker system prune -f
