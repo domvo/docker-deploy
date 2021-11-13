@@ -16,7 +16,7 @@ jobs:
 
   run-docker-container:
     runs-on: ubuntu-latest
-    needs: build-and-publish
+ #   needs: build-and-publish
     steps:
     - uses: appleboy/ssh-action@1d1b21ca96111b1eb4c03c21c14ebb971d2200f6
       with:
