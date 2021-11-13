@@ -11,5 +11,5 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: docker build . --tag astrosite:latest
-    - run: echo "{{ secrets.PAT }}" | docker login ghcr.io -u domvo --password-stdin
+    - run: echo ${{ secrets.PAT }} | docker login ghcr.io -u domvo --password-stdin
     - run: docker push astrosite:latest
