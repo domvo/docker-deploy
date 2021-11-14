@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
-      url: http//stage.devsters.de
+      url: http://stage.devsters.de
     steps:
     - uses: actions/checkout@v2
     - run: docker build . --tag ghcr.io/domvo/astrosite:latest
