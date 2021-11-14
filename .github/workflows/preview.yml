@@ -22,6 +22,9 @@ jobs:
   run-docker-container:
     runs-on: ubuntu-latest
     needs: build-and-publish
+    environment:
+      name: Stage
+      url: ${{ env.SLUG }}.dokku.devsters.de 
     steps:
     - run: |
         SLUGRAW=$(echo ${{ github.head_ref }} | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z) 
